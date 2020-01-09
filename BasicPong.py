@@ -2,14 +2,17 @@ import turtle
 import sys
 from turtle import Turtle, Screen, Shape
 from random import randint
-import winsound
+import platform
+if (platform.system() ==  "Windows"):
+    import winsound
 
 limit=int(input("Lütfen bir hedef skor giriniz"))
 
 
 screen = Screen()
 screen.setup(750, 500)
-winsound.PlaySound('hello.wav', winsound.SND_FILENAME)
+if (platform.system() ==  "Windows"):
+    winsound.PlaySound('hello.wav', winsound.SND_FILENAME)
 screen.tracer(0)
 
 play_top    = screen.window_height() / 2 - 100
@@ -101,7 +104,8 @@ def write_scores() :
     score_turtle.goto(screen.window_width()/4, screen.window_height()/2 - 80)
     score_turtle.write(score_R, align="center", font=("Arial", 32, "bold"))
     if score_L == limit or score_R == limit :
-        winsound.PlaySound('win.wav', winsound.SND_FILENAME)
+        if (platform.system() == "Windows"):
+            winsound.PlaySound('win.wav', winsound.SND_FILENAME)
         print("Hadi yine iyisin, çorba parası çıktı")
         turtle.bye()
         sys.tracebacklimit = 0
@@ -109,12 +113,14 @@ def check_if_someone_scores() :
     global score_L, score_R
     if (ball.xcor() + ball_radius) >= play_right :   # right of ball at right of field
         score_L += 1
-        winsound.PlaySound('goal.wav', winsound.SND_FILENAME)
+        if (platform.system() == "Windows"):
+            winsound.PlaySound('goal.wav', winsound.SND_FILENAME)
         write_scores()
         reset_ball()
     elif play_left >= (ball.xcor() - ball_radius) :  # left of ball at left of field
         score_R += 1
-        winsound.PlaySound('goal.wav', winsound.SND_FILENAME)
+        if (platform.system() == "Windows"):
+            winsound.PlaySound('goal.wav', winsound.SND_FILENAME)
         write_scores()
         reset_ball()
 
@@ -138,7 +144,8 @@ def update_ball_position () :
     elif play_bottom >= ball.ycor() - ball_radius :
         ball_move_vert *= -1
     if ball_collides_with_paddle(R) or ball_collides_with_paddle(L) :
-        winsound.PlaySound('hit.wav', winsound.SND_FILENAME)
+        if (platform.system() == "Windows"):
+            winsound.PlaySound('hit.wav', winsound.SND_FILENAME)
         ball_move_horiz *= -1
     ball.setx(ball.xcor() + ball_move_horiz)
     ball.sety(ball.ycor() + ball_move_vert)
@@ -163,6 +170,6 @@ def frame () :
     screen.update()
     screen.ontimer(frame, framerate_ms)
 write_scores()
-framerate_ms = 10
+framerate_ms = 50
 frame()
 turtle.mainloop()
