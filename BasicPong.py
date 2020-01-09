@@ -165,3 +165,4 @@ def frame () :
 write_scores()
 framerate_ms = 10
 frame()
+turtle.mainloop()
